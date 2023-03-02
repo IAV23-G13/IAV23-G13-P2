@@ -39,87 +39,105 @@ A continuación mostramos una tabla con la descripción de las clases más impor
 
 La manera en la que vamos a afrontar esta práctica es la siguiente:
 
- - Completaremos **el script de seguimiento** que se le aplicará a las ratas, de manera que puedan *seguir al objetivo*.
- 
- - También completaremos **el script** que lé de a las ratas un **movimiento errático** para cuando no estén bajo el control del flautista.
- 
- - **Crearemos un script de seguimiento** sólo para el perro, pero que **heredará** del *script de seguimiento de las ratas* completado anteriormente.
- 
- - Finalmente completaremos **el script de huida** del perro para que *se aleje de las ratas* que tenga en su proximidad. Éste código también heredará del *script de seguimiento de las ratas*.
+ - Completaremos **el script de Graph** para que sea capaz de devolver un camino utilizando el algoritmo de A*.
 
- - También vamos a crear **un script de detección**, que se aplicará tanto al perro como a las ratas, para poder detectar otros objetos alrededor suya y seguir un comportamiento u otro en función de ello.
+ - También vamos a implementar el algoritmo de smoothPath en **el script de Graph**.
+ 
+ - Además de ello, crearemos **un script de persecucuión** para el minotauro, para que sea capaz de perseguir al jugador (Teseo).
+ 
+ - Crearemos un script que sea capaz de asignar una casilla elegida con click derecho, para que Teseo vaya hacia ella.
+ 
+ - Finalmente añadiremos **todos los visuales** necesarios (por ejemplo las esferas que indican las casillas por las que pasa el hilo).
 
-Pseudocódigo del algoritmo de seguimiento:
+Pseudocódigo del algoritmo de A*:
 ```
-class Follow:
-    character: Kinematic
-    target: Kinematic
+function pathfindAStar(graph: Graph, start: Node, end: Node, heuristic: Heuristic) -> Connection[]:
 
-    maxAcc: float
-    maxSp: float
+    class NodeRecord:
+        node: Node
+        connection: Connection
+        costSoFar: float
+        estimatedTotalCost: float
 
-    # Distancia mínima entre la entidad y el objetivo
-    minDist: float
 
-    # Distancia a la que la entidad va parando
-    slowDist: float
+    startRecord = new NodeRecord()
+    startRecord.node = start
+    startRecord.connection = null
+    startRecord.costSoFar = 0
+    startRecord.estimatedTotalCost = heuristic.estimate(start)
 
-    # Tiempo en llegar a la velocidad pedida
-    timToVel: float
+    open = new PathFindingList()
 
-    function gatAngl() -> AnglOut:
-        result = new AnglOut()
+    open += startRecord
+    closed = new PathFindingList()
 
-        # Dirección hacia el objetivo
-        dir = target.position - character.position
-        dist = dir.length()
 
-        # Si ya llegamos, paramos
-        if dist < minDist:
-            return null
+    while length(open) > 0:
+        
+        current = open.smallestElement()
 
-        # Si no estamos a distancia de frenar, vamos a tope
-        if dist > slowDist:
-            targetSp = maxSp
-        # si no, a calcular
-        else:
-            targetSp = maxSp * dist / slowDist
+        if (current.node == goal:
+            break
 
-         targetVel = dir
-        targetVel.normalize()
-        targetVel *= targetSp
+        connections = graph.getConnections(current)
 
-        # Aceleración para llegar a la velocidad que queremos
-        result.linear = (targetVel - character.velocity)/timeToVel
+        for connection in connections:
+        
+            endNode = connection.getToNode()
+            endNodeCost = current.costSoFar + connection.getCost()
 
-        # Si la aceleración es demasiada
-        if result.linear.length() > maxAcc:
-            result.linear.normalize()
-            result.linear *= maxAcc
+            if closed.contains(endNode):
+                endNodeRecord = closed.find(endNode)
 
-        result.angular = 0
-        return result
+                if endNodeRecord.costSoFar <= endNodeCost:
+                    continue
+
+                closed -= endNodeRecord
+
+                endNodeHeuristic = endNodeRecord.estimatedTotalCost - endNodeRecord.costSoFar
+
+        
+            else if open.contains(endNode):
+                endNodeRecord = open.find(endNode)
+
+                if endNodeRecord.costSoFar <= endNodeCost:
+                    continue
+
+                endNodeHeuristic = endNodeRecord.cost - endNodeRecord.costSoFar
+
+            else:
+                endNodeRecord = new NodeRecord()
+                endNodeRecord.node = endNode
+
+                endNodeHeuristic = heuristic.estimate(endNode)
+
+
+            endNodeRecord.cost = endNodeCost
+            endNodeRecord.connection = connection
+            endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic
+        
+
+            if not open.contains(endNode):
+                open += endNodeRecord
+
+        open -= current
+        closed += current
+
+
+
+    if current.node != goal:
+        return null
+
+    else:
+        path = []
+
+        while current.node != start:
+            path += current.connection
+            current = current.connection.getFromNode()
+
+
+        return reverse(path)
 ```
-
-Pseudocódigo de la detección de ratas:
-
-    function AreRatsNearby(int maxNumOfRats) -> bool 
-	    nearbyObjects = Physics.SphereCast(...)
-	    numOfRats = 0 
-	    foreach object in nearbyObjects: 
-		    if object is a rat: 
-			    numOfRats++ 
-			    if numOfRats >= maxNumOfRats: 
-				    return true 
-			    return false
-
-
-
-Diagrama de la máquina de estado del perro
-
-![Máquina de estados del perro](https://cdn.discordapp.com/attachments/1072955659827556384/1072964346335989841/image.png)
-Diagrama de la máquina de estado de las ratas
-![Máquina de estado de las ratas](https://cdn.discordapp.com/attachments/1072955659827556384/1072965194038390824/image.png)
 
 
 ## Pruebas y métricas
