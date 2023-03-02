@@ -1,3 +1,4 @@
+
 # Práctica 2 (IAV) - Grupo 13
 
 ## Autores
@@ -6,26 +7,32 @@
 - Enrique Juan Gamboa ([ivo_hr](https://github.com/ivo-hr))
 
 ## Propuesta
-Esta práctica consiste en realizar un prototipo de IA dentro de un pequeño entorno virtual con obstáculos y una entidad jugador, que será **el flautista**. En este entorno se encuentran, de manera *dinámica* **un perro** y un grupo de **ratas**.
+Esta práctica consiste en realizar una IA dentro de un laberinto que tratará de encontrar la ruta más corta a la salida. Contaremos con una entidad jugador, que será **Teseo**. En este laberinto también se encuentra de manera *dinámica* **el Minotauro**, el cual la IA tendrá que evitar a la hora de encontrar la ruta hacia la salida.
 
 La idea principal de la práctica es conseguir los siguientes comportamientos:
 
- 1. **El perro** deberá de *seguir al flautista* de manera que prediga el movimiento del flautista, y quedarse a una distancia de él.
- 2. **El perro** ha de huir si *hay tres o más ratas cerca suya*.
- 3. **Las ratas** han de moverse erráticamente cuando *el flautista no toca la flauta*
- 4. **Las ratas**, al escuchar la flauta, tienen que *seguir al flautista*, y *ordenarse entre ellas en formación*. Tienen que tener separación entre ellas y quedarse a una distancia del flautista.
+ 1. **Teseo** deberá de *llegar a la casilla destino* de manera que recorra la menor distancia posible mientras *evita al minotauro*, haciendo uso del algoritmo A* para navegar por el laberinto.
+ 2. **El Minotauro** debe *merodear por el laberinto*, "buscando" a Teseo.
+ 3. **El Minotauro** ha de *perseguir a Teseo* si lo ve o si él se le acerca mucho.
 
 
 ## Punto de partida
 Se parte de un proyecto base de Unity proporcionado por el profesor aquí:
-https://github.com/Narratech/IAV-P1.
+https://github.com/Narratech/IAV-Navegacion.
 
-En resumen, partimos de un proyecto de Unity en el que se nos proporciona una **escena principal** con un **flautista** (el jugador), una **rata** y un **perro**. 
+En resumen, partimos de un proyecto de Unity en el que se nos proporciona, en una escena, un **menú principal** en el que podremos seleccionar el *tamaño del laberinto* y el *número de minotauros* en él. Una vez seleccionados los parámetros que queremos y le demos al botón de *Comenzar*, aparecerá un **laberinto del tamaño seleccionado**, y en él el **número de minotauros seleccionado** y a **Teseo**. Teseo se puede mover con WASD, podemos cambiar los FPS con F, hacer zoom con la rueda del ratón, reiniciar con R y cambiar la heurística utilizada con C.
 
-En cuanto a código, se nos ha proporcionado varios scripts generales: *Agente, ComportamientoAgente, Dirección* y *GestorJuego*. A un nivel más específico, tenemos scripts para el perro  (*Persecución*, *Huir*), las ratas (*Merodear*), para ambos (*Llegada*) y para el jugador (*ControlJugador, TocarFlauta*). La mayoría de estos últimos scripts **vienen sin hacer**. 
-También se incluyen en el proyecto *prefabs* para el jugador, el perro y las ratas.
+En cuanto a código, se nos ha proporcionado varios scripts generales: *Agente, ComportamientoAgente, Dirección*, *MinoManager* y *GestorJuego*. A un nivel más específico, tenemos scripts para el jugador  (*ControlJugador* y *SeguirCamino*) y para los Minotauros (*Merodear*, *MinoCollision*, *MinoEvader* y *Slow*). La mayoría de estos últimos scripts, a pesar de venir con algo de código, **hay que completarlos**. 
+También se incluyen en el proyecto *prefabs* para el jugador, los minotauros y los elementos del laberinto.
 
-Con todo lo anterior, sin cambiar, añadir, quitar ni editar nada, **tenemos un mundo** en el que existen **obstáculos**, una **rata**, un **perro** y un **flautista** (el jugador). El jugador puede *moverse* (WASD/flechas), *tocar la flauta* (espacio), *cambiar la cámara* (N), *activar y desactivar obstáculos* (T), *añadir ratas* (O), *quitar ratas* (P), *cambiar los FPS* (F) y *recargar la escena* (R), indicado al jugador a través de  **una UI** en la que nos muestra una leyenda de los controles, un contador de ratas y otro contador de FPS.
+A continuación mostramos una tabla con la descripción de las clases más importantes que nos han sido proporcionados:
+| **Clase**|**Script origen**|**Descripción**|
+|:--:|:--:|:--|
+|Graph|*Graph.cs*|Proporciona la arquitectura necesaria para poder crear y leer grafos. También ofrece métodos para generar caminos usando heurísticas diferentes.
+|GraphGrid (hereda de Graph)|*GraphGrid.cs*|Genera el nivel y proporciona un grafo asociado a él. Utiliza los costes que tienen cada *tile* utilizado para generarlo para siempre ofrecer una solución.
+|Node|*Node.cs*|Pequeña clase que ofrece nodos con valores a *Graph*. También proporciona métodos para compararlos.
+|TheseusGraph|*TheseusGraph.cs*|Clase que genera un camino a través del nivel para Teseo, usando la clase *Graph*. Ofrece métodos para encontrar el camino con heurísticas diferentes y para dibujar el camino que va a tomar, junto a otras utilidades más pequeñas.
+|Vertex|*Vertex.cs*|Similar a *Node*, proporciona los vértices para utilizarse en los grafos de *Graph*. También ofrece métodos para comparar dichos vértices.
 
 
 ## Diseño de la solución
@@ -117,7 +124,7 @@ Diagrama de la máquina de estado de las ratas
 
 ## Pruebas y métricas
 
-- [Vídeo con la batería de pruebas](https://youtu.be/AGn-hzSmkSk)
+- [Vídeo con la batería de pruebas](https://www.youtube.com/watch?v=e9LektRme1c)
 
 ## Ampliaciones
 
@@ -129,18 +136,20 @@ Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 
 | Estado  |  Tarea  |  Fecha  |  
 |:-:|:--|:-:|
-| ✔ | Diseño: Primer borrador | 08/02/2023 |
-| ✔ | Característica A: Mundo virtual | 09/02/2023 |
-| ✔ | Característica B: Perro sigue al flautista| 18/02/2023 |
-| ✔ | Característica C: Perro huye de ratas| 18/02/2023 |
-| ✔ | Característica D: Ratas merodeadoras| 22/02/2023 |
-| ✔ | Característica E: Ratas hipnotizadas| 19/02/2023 |
-|   | ... | |
-|  | OPCIONAL |  |
-|  | Generador pseudoaleatorio | --/--/---- |
-|  | Varios flautistas/generadores de ratas| --/--/---- |
-|  | Curarle la ceguera al perro| --/--/---- |
-|  | Perro y ratas evitan obstáculos| --/--/---- |
+|  | Diseño: Primer borrador | 02/03/2023 |
+|  | Característica A: Jugador controlado con el clic izquierdo | --/--/---- |
+|  | Característica B: Lógica de los minotauros | --/--/---- |
+|  | Característica C: Camino más corto con A* + heurística variable | --/--/---- |
+|  | Característica D: Suavizado del camino | --/--/---- |
+|  | Característica E: Navegación del avatar | --/--/---- |
+||||
+| **-----** | **OPCIONAL** | **-----** |
+|  | Generación procedural | --/--/---- |
+|  | Camino de patrulla de los mintauros | --/--/---- |
+|  | Baldosas de distinto coste| --/--/---- |
+|  | Múltiples salidas (Dijkstra)| --/--/---- |
+|  | Cambio de color del hilo + recalculación| --/--/---- |
+|  | Corte del hilo| --/--/---- |
 
 ## Referencias
 
