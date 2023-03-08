@@ -90,7 +90,7 @@ namespace UCM.IAV.Navegacion
             if (Input.GetKeyDown(KeyCode.S))
                 smoothPath = !smoothPath;
 
-            if (ariadna)
+            if (/*ariadna*/ true)
             {
                 //Source jugador y destino el nodo final
                 if (srcObj == null) srcObj = GameManager.instance.GetPlayer();
