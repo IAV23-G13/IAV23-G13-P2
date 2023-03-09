@@ -21,13 +21,19 @@ namespace UCM.IAV.Navegacion
     using UnityEngine.UIElements;
     using System.Linq;
     using JetBrains.Annotations;
+    using System;
 
-    class VertexRecord
+    class VertexRecord : IComparable<VertexRecord>
     {
         public Vertex vertex;
         public Connection connection;
         public float costSoFar;
         public float estimatedTotalCost;
+
+        public int CompareTo(VertexRecord other)
+        {
+            return other.estimatedTotalCost.CompareTo(estimatedTotalCost);
+        }
 
         public static bool operator <(VertexRecord a, VertexRecord b)
         {
@@ -70,6 +76,8 @@ namespace UCM.IAV.Navegacion
 
         // Used for getting path in frames
         public List<Vertex> path;
+
+        
 
 
         public virtual void Start()
@@ -140,10 +148,10 @@ namespace UCM.IAV.Navegacion
         public List<Vertex> GetPathAstar(GameObject start, GameObject goal, Heuristic heuristic = null)
         {
             var startRecord = new VertexRecord();
-            startRecord.vertex = start.GetComponent<Vertex>();
+            startRecord.vertex = this.GetNearestVertex(start.transform.position);
             startRecord.connection = new Connection(startRecord, null);
             startRecord.costSoFar = 0;
-            startRecord.estimatedTotalCost = heuristic(start.GetComponent<Vertex>(), goal.GetComponent<Vertex>());
+            startRecord.estimatedTotalCost = heuristic(this.GetNearestVertex(start.transform.position), this.GetNearestVertex(goal.transform.position));
 
             var open = new List<VertexRecord>();
             open.Add(startRecord);
@@ -155,11 +163,13 @@ namespace UCM.IAV.Navegacion
 
             while (open.Count > 0)
             {
+
+                //Debug.Log(open.Min());
                 var next = open.Min();
                 current.connection.to = next;
                 current = next;
 
-                if (current.vertex == goal)
+                if (current.vertex == this.GetNearestVertex(goal.transform.position))
                 {
                     break;
                 }
@@ -201,12 +211,12 @@ namespace UCM.IAV.Navegacion
                         nextVertexRecord = new VertexRecord();
                         nextVertexRecord.vertex = nextVertex;
 
-                        nextVertexHeuristic = heuristic(nextVertexRecord.vertex, goal.GetComponent<Vertex>());
+                        nextVertexHeuristic = heuristic(nextVertexRecord.vertex, this.GetNearestVertex(goal.transform.position));
                     }
 
 
                     nextVertexRecord.costSoFar = costToNext;
-                    nextVertexRecord.connection = new Connection(startRecord, null);
+                    nextVertexRecord.connection = new Connection(nextVertexRecord, null);
                     nextVertexRecord.estimatedTotalCost = costToNext + nextVertexHeuristic;
 
                     if (!open.Exists((a) => { return a.vertex == nextVertex; }))
@@ -219,7 +229,7 @@ namespace UCM.IAV.Navegacion
                 closed.Add(current);
             }
 
-            if (current.vertex != goal)
+            if (current.vertex.id != this.GetNearestVertex(goal.transform.position).id)
                 return null;
             else
             {
@@ -227,11 +237,9 @@ namespace UCM.IAV.Navegacion
 
                 var curr = startRecord;
 
-                while (curr.vertex != null)
+                while (curr.vertex.id != this.GetNearestVertex(goal.transform.position).id)
                 {
                     result.Add(curr.vertex);
-
-                    curr.vertex.gameObject.SetActive(false);
 
                     curr = curr.connection.to;
                 }
@@ -240,7 +248,6 @@ namespace UCM.IAV.Navegacion
 
                 return result;
             }
-            return new List<Vertex>();
         }
 
         public List<Vertex> Smooth(List<Vertex> inputPath)

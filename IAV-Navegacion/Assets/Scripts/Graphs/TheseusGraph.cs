@@ -57,6 +57,11 @@ namespace UCM.IAV.Navegacion
         protected LineRenderer hilo;
         protected float hiloOffset = 0.2f;
 
+        public float heur(Vertex from, Vertex to)
+        {
+            return -Vector3.Distance(from.transform.position, to.transform.position);
+        }
+
         // Despertar inicializando esto
         public virtual void Awake()
         {
@@ -66,6 +71,8 @@ namespace UCM.IAV.Navegacion
             path = new List<Vertex>();
             hilo = GetComponent<LineRenderer>();
             ariadna = false;
+
+
 
             hilo.startWidth = 0.15f;
             hilo.endWidth = 0.15f;
@@ -101,7 +108,7 @@ namespace UCM.IAV.Navegacion
                 switch (algorithm)
                 {
                     case TesterGraphAlgorithm.ASTAR:
-                        if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, null); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
+                        if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, heur); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
                         else path = graph.GetPathAstar(srcObj, dstObj, null); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
                         break;
                     default:
