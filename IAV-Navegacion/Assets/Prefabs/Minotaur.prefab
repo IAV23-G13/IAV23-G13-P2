@@ -469,6 +469,9 @@ GameObject:
   - component: {fileID: 5856985828648263929}
   - component: {fileID: 4308355810874672084}
   - component: {fileID: 8357271194336293764}
+  - component: {fileID: 5315628852465992799}
+  - component: {fileID: 6507237307752362611}
+  - component: {fileID: 5639519897254311708}
   m_Layer: 7
   m_Name: Minotaur
   m_TagString: Untagged
@@ -574,6 +577,55 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b3c1821a2a9e9042a9e648ea61af8f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5315628852465992799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856985828648263931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ae6ecb59bfdb145aa73cf70a7145c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
+  radioObjetivo: 0
+  radioRalentizado: 0
+  fuerzaRalentizado: 0
+  avoidQuantity: 5
+  distance: 7
+--- !u!114 &6507237307752362611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856985828648263931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ffa41cffd326f64b856316d349eca5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peso: 1
+  prioridad: 1
+  objetivo: {fileID: 0}
+  maxTime: 2
+  minTime: 1
+--- !u!114 &5639519897254311708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856985828648263931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dc0fa80e00b6a048a5dc82185ba7a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6227627562668922387
@@ -759,7 +811,7 @@ GameObject:
   - component: {fileID: 6714168204369594045}
   - component: {fileID: 4847393998361609635}
   - component: {fileID: 2088125191281208512}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

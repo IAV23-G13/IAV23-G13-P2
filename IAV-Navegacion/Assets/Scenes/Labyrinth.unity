@@ -903,6 +903,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5587432493576105249, guid: c391d0bafd410864ca5d0cc1bd083ed3,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5587432493576105250, guid: c391d0bafd410864ca5d0cc1bd083ed3,
         type: 3}
       propertyPath: m_Material
@@ -1753,7 +1758,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minotaur: {fileID: 5856985828648263931, guid: a28f19a75248a0949bb33e20b0a58fcc,
     type: 3}
-  minoGraph: {fileID: 0}
   numMinos: 1
 --- !u!4 &1580546821
 Transform:
