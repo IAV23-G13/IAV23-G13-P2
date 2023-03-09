@@ -594,11 +594,11 @@ MonoBehaviour:
   peso: 1
   prioridad: 1
   objetivo: {fileID: 0}
-  radioObjetivo: 0
-  radioRalentizado: 0
-  fuerzaRalentizado: 0
+  radioObjetivo: 2
+  radioRalentizado: 2
+  fuerzaRalentizado: 2
   avoidQuantity: 5
-  distance: 7
+  distance: 10
 --- !u!114 &6507237307752362611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -628,6 +628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dc0fa80e00b6a048a5dc82185ba7a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
 --- !u!1 &6227627562668922387
 GameObject:
   m_ObjectHideFlags: 0

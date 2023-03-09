@@ -33,12 +33,17 @@ public class Vista : MonoBehaviour
             if (sight.collider.gameObject.tag == "Player") //hay que comprobar tambien el angulo de vista
             {
                 //asignar al jugador 
+                mero.enabled = false;
+                lleg.enabled = true;
                 lleg.objetivo = sight.collider.gameObject;
-                //cambiar pesos para activar el seguimiento
+                
+
             }
             else
             {
                 //cambiar pesos para que merodee
+                mero.enabled = true;
+                lleg.enabled = false;
             }
         }
 
