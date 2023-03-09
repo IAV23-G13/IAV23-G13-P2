@@ -22,11 +22,12 @@ namespace UCM.IAV.Navegacion
     using System.Linq;
     using JetBrains.Annotations;
     using System;
+    using System.Transactions;
 
     class VertexRecord : IComparable<VertexRecord>
     {
         public Vertex vertex;
-        public Connection connection;
+        public VertexRecord previous;
         public float costSoFar;
         public float estimatedTotalCost;
 
@@ -43,18 +44,6 @@ namespace UCM.IAV.Navegacion
         public static bool operator >(VertexRecord a, VertexRecord b)
         {
             return a.estimatedTotalCost > b.estimatedTotalCost;
-        }
-    }
-
-    struct Connection
-    {
-        public VertexRecord from;
-        public VertexRecord to;
-
-        public Connection(VertexRecord _to, VertexRecord _from)
-        {
-            from = _from;
-            to = _to;
         }
     }
 
@@ -149,7 +138,7 @@ namespace UCM.IAV.Navegacion
         {
             var startRecord = new VertexRecord();
             startRecord.vertex = this.GetNearestVertex(start.transform.position);
-            startRecord.connection = new Connection(startRecord, null);
+            startRecord.previous = null;
             startRecord.costSoFar = 0;
             startRecord.estimatedTotalCost = heuristic(this.GetNearestVertex(start.transform.position), this.GetNearestVertex(goal.transform.position));
 
@@ -166,8 +155,14 @@ namespace UCM.IAV.Navegacion
 
                 //Debug.Log(open.Min());
                 var next = open.Min();
-                current.connection.to = next;
+                // next.previous = current;
                 current = next;
+
+                //if (current.previous != null)
+                //{
+                //    if (current.previous.next != current)
+                //        current.previous.next = current;
+                //}
 
                 if (current.vertex == this.GetNearestVertex(goal.transform.position))
                 {
@@ -176,11 +171,11 @@ namespace UCM.IAV.Navegacion
 
                 var connections = this.GetNeighbours(current.vertex);
 
-                foreach (var connection in connections)
+                foreach (var neighbour in connections)
                 {
 
-                    Vertex nextVertex = connection;
-                    float costToNext = current.costSoFar + connection.cost;
+                    Vertex nextVertex = neighbour;
+                    float costToNext = current.costSoFar + neighbour.cost;
 
                     VertexRecord nextVertexRecord;
                     float nextVertexHeuristic;
@@ -212,11 +207,11 @@ namespace UCM.IAV.Navegacion
                         nextVertexRecord.vertex = nextVertex;
 
                         nextVertexHeuristic = heuristic(nextVertexRecord.vertex, this.GetNearestVertex(goal.transform.position));
+                        nextVertexRecord.previous = current;
                     }
 
 
                     nextVertexRecord.costSoFar = costToNext;
-                    nextVertexRecord.connection = new Connection(nextVertexRecord, null);
                     nextVertexRecord.estimatedTotalCost = costToNext + nextVertexHeuristic;
 
                     if (!open.Exists((a) => { return a.vertex == nextVertex; }))
@@ -235,17 +230,19 @@ namespace UCM.IAV.Navegacion
             {
                 var result = new List<Vertex>();
 
-                var curr = startRecord;
+                var curr = current;
 
-                while (curr.vertex.id != this.GetNearestVertex(goal.transform.position).id)
+                while (curr.vertex.id != this.GetNearestVertex(start.transform.position).id)
                 {
                     result.Add(curr.vertex);
 
-                    curr = curr.connection.to;
+                    Debug.Log(curr.vertex.id);
+
+                    curr = curr.previous;
                 }
 
-
-
+                result.Add(this.GetNearestVertex(start.transform.position));
+                // result.Reverse();
                 return result;
             }
         }
