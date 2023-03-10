@@ -33,7 +33,7 @@ namespace UCM.IAV.Navegacion
 
         public int CompareTo(VertexRecord other)
         {
-            return other.estimatedTotalCost.CompareTo(estimatedTotalCost);
+            return estimatedTotalCost.CompareTo(other.estimatedTotalCost);
         }
 
         public static bool operator <(VertexRecord a, VertexRecord b)

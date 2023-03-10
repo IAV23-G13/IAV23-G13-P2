@@ -59,7 +59,7 @@ namespace UCM.IAV.Navegacion
 
         public float heur(Vertex from, Vertex to)
         {
-            return -Vector3.Distance(from.transform.position, to.transform.position);
+            return Vector3.Distance(from.transform.position, to.transform.position);
         }
 
         // Despertar inicializando esto
