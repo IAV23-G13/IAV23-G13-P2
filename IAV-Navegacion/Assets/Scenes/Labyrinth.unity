@@ -793,6 +793,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2722770129412169927, guid: c391d0bafd410864ca5d0cc1bd083ed3,
+        type: 3}
+      propertyPath: graph
+      value: 
+      objectReference: {fileID: 478290963}
+    - target: {fileID: 2722770129412169927, guid: c391d0bafd410864ca5d0cc1bd083ed3,
+        type: 3}
+      propertyPath: objetivo
+      value: 
+      objectReference: {fileID: 1299422300}
     - target: {fileID: 2889885094638006734, guid: c391d0bafd410864ca5d0cc1bd083ed3,
         type: 3}
       propertyPath: m_Layer

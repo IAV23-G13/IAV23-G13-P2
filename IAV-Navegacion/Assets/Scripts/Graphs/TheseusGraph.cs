@@ -134,7 +134,7 @@ namespace UCM.IAV.Navegacion
         public virtual Transform GetNextNode()
         {
             if (path.Count > 0)
-                return path[path.Count - 1].transform;
+                return path[path.Count - 2].transform;
 
             return null;
         }
