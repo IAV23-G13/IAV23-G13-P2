@@ -123,14 +123,15 @@ namespace UCM.IAV.Navegacion
                         path = graph.GetPathDFS(srcObj, dstObj);
                         break;
                 }
+
+
                 if (smoothPath)
                 {
-                    path = graph.Smooth(path); // Suavizar el camino, una vez calculado
+                    // Suavizar el camino, una vez calculado
+                    path = graph.Smooth(path);
                     Debug.Log("path Count: " + path.Count);
-                    DibujaHilo();
                 }
 
-               
 
                 if (path.Count > 0)
                 {

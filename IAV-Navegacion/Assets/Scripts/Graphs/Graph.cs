@@ -249,32 +249,62 @@ namespace UCM.IAV.Navegacion
 
         public List<Vertex> Smooth(List<Vertex> inputPath)
         {
-            // IMPLEMENTAR SUAVIZADO DE CAMINOS
+            List<Vertex> smoothedPath = new List<Vertex>();
+            int numVertices = inputPath.Count;
+            int smoothingRadius = 10;
+            float weightData = 0.5f;
+            float weightSmooth = 0.5f;
 
-
-            List<Vertex> smPath = new List<Vertex>();
-
-            int numVertices = path.Count;
-            
-            int smRadius = 2;
-            
-            for (int i = numVertices; i > 0; i--)
+            // Apply the smoothing algorithm to each node in the input path
+            for (int i = 0; i < numVertices; i++)
             {
-                int start = Mathf.Max(0, i + smRadius);
-                int end = Mathf.Min(numVertices - 1, i - smRadius);
+                Vertex node = inputPath[i];
 
-                float sumCost = 0f;
+                // Initialize the smoothed node's properties
+                Vertex smoothedNode = new Vertex();
+                smoothedNode.id = node.id;
+
+                // Calculate the weighted average of the node's cost and its neighbors' costs
+                float weightedCost = weightData * node.cost;
+                Vector3 weightedPosition = weightData * (node.transform != null ? node.transform.position : Vector3.zero);
+
+                int start = Mathf.Max(0, i - smoothingRadius);
+                int end = Mathf.Min(numVertices - 1, i + smoothingRadius);
+
                 for (int j = start; j <= end; j++)
-                    sumCost += path[j].cost;
+                {
+                    if (j != i)
+                    {
+                        Vertex neighborNode = inputPath[j];
+                        weightedCost += weightSmooth * neighborNode.cost;
+                        weightedPosition += weightSmooth * (neighborNode.transform != null ? neighborNode.transform.position : Vector3.zero);
+                    }
+                }
 
-                float smCost = sumCost / (end - start + 1);
-                Vertex smVertex = new Vertex();
-                smVertex.id = path[i].id;
-                smVertex.cost = smCost;
-                smPath.Add(smVertex);
+                smoothedNode.cost = weightedCost;
+
+                // Add some debug output to print out the ID of the nodes that don't have a Transform component
+                if (node.transform == null)
+                {
+                    Debug.LogWarning($"Node {node.id} has no Transform component");
+                }
+
+                if (end - start + 1 == 0)
+                {
+                    Debug.LogWarning($"Smoothing radius is too small for node {node.id}");
+                }
+
+                // Add the smoothed node to the smoothed path
+                smoothedPath.Add(smoothedNode);
+
+                // Check if there are any null references in the smoothed path
+                if (smoothedNode.transform == null)
+                {
+                    Debug.LogWarning($"Smoothed node {smoothedNode.id} has no Transform component");
+                }
             }
 
-            return smPath;
+            return smoothedPath;
         }
 
         // Reconstruir el camino, dando la vuelta a la lista de nodos 'padres' /previos que hemos ido anotando
