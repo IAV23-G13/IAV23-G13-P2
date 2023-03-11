@@ -307,6 +307,7 @@ namespace UCM.IAV.Navegacion
             return smoothedPath;
         }
 
+
         // Reconstruir el camino, dando la vuelta a la lista de nodos 'padres' /previos que hemos ido anotando
         private List<Vertex> BuildPath(int srcId, int dstId, ref int[] prevList)
         {
