@@ -251,9 +251,30 @@ namespace UCM.IAV.Navegacion
         {
             // IMPLEMENTAR SUAVIZADO DE CAMINOS
 
-            List<Vertex> outputPath = new List<Vertex>();
 
-            return outputPath; 
+            List<Vertex> smPath = new List<Vertex>();
+
+            int numVertices = path.Count;
+            
+            int smRadius = 2;
+            
+            for (int i = numVertices; i > 0; i--)
+            {
+                int start = Mathf.Max(0, i + smRadius);
+                int end = Mathf.Min(numVertices - 1, i - smRadius);
+
+                float sumCost = 0f;
+                for (int j = start; j <= end; j++)
+                    sumCost += path[j].cost;
+
+                float smCost = sumCost / (end - start + 1);
+                Vertex smVertex = new Vertex();
+                smVertex.id = path[i].id;
+                smVertex.cost = smCost;
+                smPath.Add(smVertex);
+            }
+
+            return smPath;
         }
 
         // Reconstruir el camino, dando la vuelta a la lista de nodos 'padres' /previos que hemos ido anotando

@@ -94,8 +94,12 @@ namespace UCM.IAV.Navegacion
             }
 
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.K))
+            {
                 smoothPath = !smoothPath;
+                Debug.Log("Smoothing is set to " +  smoothPath);
+            }
+
 
             if (ariadna)
             {
@@ -120,7 +124,13 @@ namespace UCM.IAV.Navegacion
                         break;
                 }
                 if (smoothPath)
+                {
                     path = graph.Smooth(path); // Suavizar el camino, una vez calculado
+                    Debug.Log("path Count: " + path.Count);
+                    DibujaHilo();
+                }
+
+               
 
                 if (path.Count > 0)
                 {
