@@ -112,8 +112,9 @@ namespace UCM.IAV.Navegacion
                 switch (algorithm)
                 {
                     case TesterGraphAlgorithm.ASTAR:
-                        if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, heur); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
-                        else path = graph.GetPathAstar(srcObj, dstObj, null); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
+                        if (path == null || path.Count == 0)
+                            if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, heur); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
+                            else path = graph.GetPathAstar(srcObj, dstObj, null); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
                         break;
                     default:
                     case TesterGraphAlgorithm.BFS:
@@ -145,7 +146,7 @@ namespace UCM.IAV.Navegacion
         public virtual Transform GetNextNode()
         {
             if (path.Count > 0)
-                return path[path.Count - 2].transform;
+                return path[path.Count - 1].transform;
 
             return null;
         }
@@ -248,5 +249,9 @@ namespace UCM.IAV.Navegacion
             path = null;
         }
 
+        internal void PopLastNode()
+        {
+            path.RemoveAt(path.Count - 1);
+        }
     }
 }

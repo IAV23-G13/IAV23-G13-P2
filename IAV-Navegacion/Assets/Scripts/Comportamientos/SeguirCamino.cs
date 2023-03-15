@@ -21,6 +21,10 @@ namespace UCM.IAV.Movimiento
 
         override public void Update()
         {
+            if (sigNodo != null && Vector3.Distance(transform.position, sigNodo.position) < 0.5f)
+            {
+                graph.PopLastNode();
+            }
             sigNodo = graph.GetNextNode();
             base.Update();
         }
