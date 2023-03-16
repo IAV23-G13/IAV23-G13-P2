@@ -155,19 +155,19 @@ Las tareas se han realizado y el esfuerzo ha sido repartido entre los autores.
 | Estado  |  Tarea  |  Fecha  |  
 |:-:|:--|:-:|
 |  | Diseño: Primer borrador | 02/03/2023 |
-|  | Característica A: Jugador controlado con el clic izquierdo | --/--/---- |
-|  | Característica B: Lógica de los minotauros | --/--/---- |
-|  | Característica C: Camino más corto con A* + heurística variable | --/--/---- |
-|  | Característica D: Suavizado del camino | --/--/---- |
-|  | Característica E: Navegación del avatar | --/--/---- |
+|  | Característica A: Jugador controlado con el clic izquierdo | N/D |
+|  | Característica B: Lógica de los minotauros | 08/03/2023 |
+|  | Característica C: Camino más corto con A* + heurística variable | 11/03/2023 |
+|  | Característica D: Suavizado del camino | 13/03/2023 |
+|  | Característica E: Navegación del avatar | 11/03/2023 |
 ||||
 | **-----** | **OPCIONAL** | **-----** |
-|  | Generación procedural | --/--/---- |
-|  | Camino de patrulla de los mintauros | --/--/---- |
-|  | Baldosas de distinto coste| --/--/---- |
-|  | Múltiples salidas (Dijkstra)| --/--/---- |
-|  | Cambio de color del hilo + recalculación| --/--/---- |
-|  | Corte del hilo| --/--/---- |
+|  | Generación procedural | N/D |
+|  | Camino de patrulla de los mintauros | N/D |
+|  | Baldosas de distinto coste| N/D |
+|  | Múltiples salidas (Dijkstra)| N/D |
+|  | Cambio de color del hilo + recalculación| N/D |
+|  | Corte del hilo| 09/03/2023 |
 
 ## Referencias
 
