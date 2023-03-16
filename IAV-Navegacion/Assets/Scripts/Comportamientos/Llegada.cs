@@ -42,7 +42,8 @@ namespace UCM.IAV.Movimiento
             Direccion direccion = new Direccion();
 
             // Distancia de objeto al agente
-            float distance = (objetivo.transform.position - transform.position).magnitude;
+            float distance = 0f;
+            if (objetivo != null) distance = (objetivo.transform.position - transform.position).magnitude;
 
             // Si ha alcanzado el radio objetivo se para
             if (distance < radioObjetivo)
@@ -61,7 +62,8 @@ namespace UCM.IAV.Movimiento
                 targetAccel = agente.aceleracionMax * distance / (radioRalentizado * fuerzaRalentizado);
 
             // Velocity combina aceleración y dirección
-            Vector3 targetVelocity = objetivo.transform.position - transform.position;
+            Vector3 targetVelocity = Vector3.zero;
+            if (objetivo != null) targetVelocity = objetivo.transform.position - transform.position;
             targetVelocity.Normalize();
             targetVelocity *= targetAccel;
 

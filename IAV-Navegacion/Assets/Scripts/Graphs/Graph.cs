@@ -6,7 +6,6 @@
    Autor: Federico Peinado 
    Contacto: email@federicopeinado.com
 */
-using UnityEditor.MemoryProfiler;
 
 namespace UCM.IAV.Navegacion
 {
@@ -16,9 +15,9 @@ namespace UCM.IAV.Navegacion
     using System.Collections.Generic;
     using static UCM.IAV.Navegacion.Graph;
     using System.IO;
-    using UnityEditor.Experimental.GraphView;
-    using UnityEditor.MemoryProfiler;
-    using UnityEngine.UIElements;
+    
+    
+    
     using System.Linq;
     using JetBrains.Annotations;
     using System;
