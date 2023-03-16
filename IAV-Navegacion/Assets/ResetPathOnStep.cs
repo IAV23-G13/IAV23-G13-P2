@@ -23,7 +23,7 @@ public class ResetPathOnStep : MonoBehaviour
         {
             Vertex col = info.transform.GetComponent<Vertex>();
 
-            if (col.isInPath)
+            if (col!=null&&col.isInPath)
             {
                 player.ResetPath();
             }

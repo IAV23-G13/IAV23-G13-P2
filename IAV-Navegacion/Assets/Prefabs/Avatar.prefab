@@ -401,6 +401,7 @@ GameObject:
   - component: {fileID: 5587432493576105252}
   - component: {fileID: 4854084622575493915}
   - component: {fileID: 2722770129412169927}
+  - component: {fileID: -7941692830881973996}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Player
@@ -550,6 +551,18 @@ MonoBehaviour:
   prioridad: 1
   objetivo: {fileID: 0}
   graph: {fileID: 0}
+--- !u!114 &-7941692830881973996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587432493576105249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13684ffe492191840b7059313990e5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5688858013686503154
 GameObject:
   m_ObjectHideFlags: 0
