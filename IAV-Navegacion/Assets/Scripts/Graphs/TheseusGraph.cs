@@ -57,9 +57,14 @@ namespace UCM.IAV.Navegacion
         protected LineRenderer hilo;
         protected float hiloOffset = 0.2f;
 
-        public float heur(Vertex from, Vertex to)
+        public float Euclidea(Vertex from, Vertex to)
         {
             return Vector3.Distance(from.transform.position, to.transform.position);
+        }
+        public float OtraNoSe(Vertex from, Vertex to)
+        {
+            return Math.Abs(from.transform.position.x - to.transform.position.x) +
+                Math.Abs(from.transform.position.y - to.transform.position.y);
         }
 
         // Despertar inicializando esto
@@ -113,8 +118,8 @@ namespace UCM.IAV.Navegacion
                 {
                     case TesterGraphAlgorithm.ASTAR:
                         if (path == null || path.Count == 0)
-                            if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, heur); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
-                            else path = graph.GetPathAstar(srcObj, dstObj, null); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
+                            if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, Euclidea); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
+                            else path = graph.GetPathAstar(srcObj, dstObj, OtraNoSe); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
                         break;
                     default:
                     case TesterGraphAlgorithm.BFS:
@@ -241,6 +246,7 @@ namespace UCM.IAV.Navegacion
         {
             // Está preparado para tener 2 heurísticas diferentes
             firstHeuristic = !firstHeuristic;
+            ResetPath();
             return firstHeuristic ? "Primera" : "Segunda";
         }
 
