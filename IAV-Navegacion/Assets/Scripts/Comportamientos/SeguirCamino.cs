@@ -21,6 +21,7 @@ namespace UCM.IAV.Movimiento
 
         override public void Update()
         {
+            //Si esta lo suficientemente cerca del nodo destino, lo elimina del camino en graph
             if (sigNodo != null && Vector3.Distance(transform.position, sigNodo.position) < 0.5f)
             {
                 graph.PopLastNode();

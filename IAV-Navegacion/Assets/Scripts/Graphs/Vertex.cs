@@ -25,6 +25,8 @@ namespace UCM.IAV.Navegacion
         /// </summary>
         public float cost;
 
+
+        //Nueva variable utilizada para saber si el minotauro esta pisando parte del camino
         public bool isInPath;
 
         public int CompareTo(Vertex other)

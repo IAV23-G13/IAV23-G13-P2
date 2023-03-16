@@ -24,7 +24,7 @@ namespace UCM.IAV.Navegacion
     using System;
     using System.Transactions;
 
-
+    //Seguramente podiamos haber utilizado la clase Node, pero no la vi hasta que ya estaba todo hecho
     class VertexRecord : IComparable<VertexRecord>
     {
         public Vertex vertex;
@@ -135,6 +135,7 @@ namespace UCM.IAV.Navegacion
             return new List<Vertex>();
         }
 
+        //Basicamente el pseudocodigo de millington traducido a C#
         public List<Vertex> GetPathAstar(GameObject start, GameObject goal, Heuristic heuristic = null)
         {
             var startRecord = new VertexRecord();
@@ -154,16 +155,7 @@ namespace UCM.IAV.Navegacion
             while (open.Count > 0)
             {
 
-                //Debug.Log(open.Min());
-                var next = open.Min();
-                // next.previous = current;
-                current = next;
-
-                //if (current.previous != null)
-                //{
-                //    if (current.previous.next != current)
-                //        current.previous.next = current;
-                //}
+                current = open.Min();
 
                 if (current.vertex == this.GetNearestVertex(goal.transform.position))
                 {
@@ -219,8 +211,6 @@ namespace UCM.IAV.Navegacion
                         open.Add(nextVertexRecord);
                 }
 
-                // open -= current
-                // closed += current
                 open.Remove(current);
                 closed.Add(current);
             }
@@ -243,6 +233,7 @@ namespace UCM.IAV.Navegacion
                     curr = curr.previous;
                 }
 
+                //Ponemos el primer vertice directamente
                 result.Add(this.GetNearestVertex(start.transform.position));
                 // result.Reverse();
                 return result;

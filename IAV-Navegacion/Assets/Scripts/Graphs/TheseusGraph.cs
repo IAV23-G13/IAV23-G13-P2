@@ -57,11 +57,12 @@ namespace UCM.IAV.Navegacion
         protected LineRenderer hilo;
         protected float hiloOffset = 0.2f;
 
+        //Heuristicas utilizadas
         public float Euclidea(Vertex from, Vertex to)
         {
             return Vector3.Distance(from.transform.position, to.transform.position);
         }
-        public float OtraNoSe(Vertex from, Vertex to)
+        public float Manhattan(Vertex from, Vertex to)
         {
             return Math.Abs(from.transform.position.x - to.transform.position.x) +
                 Math.Abs(from.transform.position.y - to.transform.position.y);
@@ -117,9 +118,10 @@ namespace UCM.IAV.Navegacion
                 switch (algorithm)
                 {
                     case TesterGraphAlgorithm.ASTAR:
+                        //Chequeo extra para no recalcular camino cuando no sea necesario
                         if (path == null || path.Count == 0)
                             if (firstHeuristic) path = graph.GetPathAstar(srcObj, dstObj, Euclidea); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
-                            else path = graph.GetPathAstar(srcObj, dstObj, OtraNoSe); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
+                            else path = graph.GetPathAstar(srcObj, dstObj, Manhattan); // COMO SEGUNDO ARGUMENTO SE DEBERÍA PASAR LA HEURÍSTICA
                         break;
                     default:
                     case TesterGraphAlgorithm.BFS:
@@ -246,12 +248,14 @@ namespace UCM.IAV.Navegacion
         {
             // Está preparado para tener 2 heurísticas diferentes
             firstHeuristic = !firstHeuristic;
+            //Recalculamos camino si cambiamos de heuristica
             ResetPath();
             return firstHeuristic ? "Primera" : "Segunda";
         }
 
         public virtual void ResetPath()
         {
+            //Método para antes de borrar el camino, ponemos todos los vertex.isinPath a false
             graph.ResetVertexPath(path);
             path = null;
         }

@@ -17,20 +17,18 @@ public class ResetPathOnStep : MonoBehaviour
 
     private void Update()
     {
+        //Checa a ver si hay algun gameobject con el componente vertex...
         var check = Physics.Raycast(transform.position, -transform.up, out var info, 10, ~(1 << gameObject.layer));
-
         if (check)
         {
             Vertex col = info.transform.GetComponent<Vertex>();
 
-            if (col!=null&&col.isInPath)
+
+            //Si es parte del camino, le dice al player que resetee el camino
+            if (col != null && col.isInPath)
             {
                 player.ResetPath();
             }
         }
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
     }
 }
