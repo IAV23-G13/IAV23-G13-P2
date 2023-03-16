@@ -142,7 +142,7 @@ function pathfindAStar(graph: Graph, start: Node, end: Node, heuristic: Heuristi
 
 ## Pruebas y métricas
 
-- [Vídeo con la batería de pruebas](https://www.youtube.com/watch?v=e9LektRme1c)
+- [Vídeo con la batería de pruebas](https://youtu.be/yVW6E7x2kIs)
 
 ## Ampliaciones
 
