@@ -67,7 +67,7 @@ namespace UCM.IAV.Navegacion
         // Used for getting path in frames
         public List<Vertex> path;
 
-        float smoothRayFatness = 0.07f;
+        float smoothRayFatness = 0.13f;
 
 
         public virtual void Start()
