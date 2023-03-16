@@ -235,6 +235,7 @@ namespace UCM.IAV.Navegacion
                 while (curr.vertex.id != this.GetNearestVertex(start.transform.position).id)
                 {
                     result.Add(curr.vertex);
+                    curr.vertex.isInPath = true;
 
                     Debug.Log(curr.vertex.id);
 
@@ -244,6 +245,14 @@ namespace UCM.IAV.Navegacion
                 result.Add(this.GetNearestVertex(start.transform.position));
                 // result.Reverse();
                 return result;
+            }
+        }
+
+        public void ResetVertexPath(List<Vertex> path)
+        {
+            foreach (var ver in path)
+            {
+                ver.isInPath = false;
             }
         }
 

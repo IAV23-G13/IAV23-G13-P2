@@ -25,6 +25,8 @@ namespace UCM.IAV.Navegacion
         /// </summary>
         public float cost;
 
+        public bool isInPath;
+
         public int CompareTo(Vertex other)
         {
             float result = this.cost - other.cost;

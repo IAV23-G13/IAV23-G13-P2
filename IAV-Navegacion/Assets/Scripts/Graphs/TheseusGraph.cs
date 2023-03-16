@@ -252,6 +252,7 @@ namespace UCM.IAV.Navegacion
 
         public virtual void ResetPath()
         {
+            graph.ResetVertexPath(path);
             path = null;
         }
 
