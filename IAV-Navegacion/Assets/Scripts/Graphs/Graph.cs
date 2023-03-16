@@ -24,6 +24,7 @@ namespace UCM.IAV.Navegacion
     using System;
     using System.Transactions;
 
+
     class VertexRecord : IComparable<VertexRecord>
     {
         public Vertex vertex;
@@ -66,7 +67,7 @@ namespace UCM.IAV.Navegacion
         // Used for getting path in frames
         public List<Vertex> path;
 
-        
+        float smoothRayFatness = 0.07f;
 
 
         public virtual void Start()
@@ -259,63 +260,48 @@ namespace UCM.IAV.Navegacion
         public List<Vertex> Smooth(List<Vertex> inputPath)
         {
             List<Vertex> smoothedPath = new List<Vertex>();
-            int numVertices = inputPath.Count;
-            int smoothingRadius = 10;
-            float weightData = 0.5f;
-            float weightSmooth = 0.5f;
+            int patIndex = 0;
+            smoothedPath.Add(inputPath[0]);
+            smoothedPath.Add(inputPath[1]);
 
-            // Apply the smoothing algorithm to each node in the input path
-            for (int i = 0; i < numVertices; i++)
+            while (patIndex < inputPath.Count)
             {
-                Vertex node = inputPath[i];
-
-                // Initialize the smoothed node's properties
-                Vertex smoothedNode = new Vertex();
-                smoothedNode.id = node.id;
-
-                // Calculate the weighted average of the node's cost and its neighbors' costs
-                float weightedCost = weightData * node.cost;
-                Vector3 weightedPosition = weightData * (node.transform != null ? node.transform.position : Vector3.zero);
-
-                int start = Mathf.Max(0, i - smoothingRadius);
-                int end = Mathf.Min(numVertices - 1, i + smoothingRadius);
-
-                for (int j = start; j <= end; j++)
+                if (this.IsLineOfSight(smoothedPath[smoothedPath.Count - 2], inputPath[patIndex]))
                 {
-                    if (j != i)
-                    {
-                        Vertex neighborNode = inputPath[j];
-                        weightedCost += weightSmooth * neighborNode.cost;
-                        weightedPosition += weightSmooth * (neighborNode.transform != null ? neighborNode.transform.position : Vector3.zero);
-                    }
+                    smoothedPath[smoothedPath.Count - 1] = inputPath[patIndex];
                 }
-
-                smoothedNode.cost = weightedCost;
-
-                // Add some debug output to print out the ID of the nodes that don't have a Transform component
-                if (node.transform == null)
+                else
                 {
-                    Debug.LogWarning($"Node {node.id} has no Transform component");
+                    smoothedPath.Add(inputPath[patIndex - 1]);
                 }
-
-                if (end - start + 1 == 0)
-                {
-                    Debug.LogWarning($"Smoothing radius is too small for node {node.id}");
-                }
-
-                // Add the smoothed node to the smoothed path
-                smoothedPath.Add(smoothedNode);
-
-                // Check if there are any null references in the smoothed path
-                if (smoothedNode.transform == null)
-                {
-                    Debug.LogWarning($"Smoothed node {smoothedNode.id} has no Transform component");
-                }
+                patIndex++;
             }
 
+            smoothedPath.Add(inputPath[inputPath.Count - 1]);
             return smoothedPath;
         }
 
+        public bool IsLineOfSight(Vertex v1, Vertex v2)
+        {
+            Vector3 dir = v2.transform.position - v1.transform.position;
+            float distance = dir.magnitude;
+            dir.Normalize();
+
+            Vector3 origin1 = v1.transform.position + Vector3.up * 0.5f + Vector3.forward * smoothRayFatness + Vector3.right * -smoothRayFatness;
+            Vector3 origin2 = v1.transform.position + Vector3.up * 0.5f + Vector3.forward * -smoothRayFatness + Vector3.right * smoothRayFatness;
+            Vector3 origin3 = v1.transform.position + Vector3.up * 0.5f + Vector3.forward * -smoothRayFatness + Vector3.right * -smoothRayFatness;
+            Vector3 origin4 = v1.transform.position + Vector3.up * 0.5f + Vector3.forward * smoothRayFatness + Vector3.right * smoothRayFatness;
+
+            Vector3 dir1 = (v2.transform.position + Vector3.forward * smoothRayFatness + Vector3.right * -smoothRayFatness) - origin1;
+            Vector3 dir2 = (v2.transform.position + Vector3.forward * -smoothRayFatness + Vector3.right * smoothRayFatness) - origin2;
+            Vector3 dir3 = (v2.transform.position + Vector3.forward * -smoothRayFatness + Vector3.right * -smoothRayFatness) - origin3;
+            Vector3 dir4 = (v2.transform.position + Vector3.forward * smoothRayFatness + Vector3.right * smoothRayFatness) - origin4;
+
+            return (!Physics.Raycast(origin1, dir1, distance) && 
+                    !Physics.Raycast(origin2, dir2, distance) && 
+                    !Physics.Raycast(origin3, dir3, distance) &&
+                    !Physics.Raycast(origin4, dir4, distance));
+        }
 
         // Reconstruir el camino, dando la vuelta a la lista de nodos 'padres' /previos que hemos ido anotando
         private List<Vertex> BuildPath(int srcId, int dstId, ref int[] prevList)
